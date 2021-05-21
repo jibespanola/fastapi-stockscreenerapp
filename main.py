@@ -70,7 +70,7 @@ def home(request: Request, forward_pe = None, dividend_yield = None, ma50 = None
 
 
 def fetch_stock_data(id: int):
-    
+    #db session in background task
     db = SessionLocal()
 
     stock = db.query(Stock).filter(Stock.id == id).first()
@@ -90,6 +90,7 @@ def fetch_stock_data(id: int):
 #POST endpoint
 #Post data to stock route
 @app.post("/stock")
+#async function required to execute background_tasks
 #get_db function executes first
 #create_stock function depends on get_db
 async def create_stock(stock_request: StockRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
